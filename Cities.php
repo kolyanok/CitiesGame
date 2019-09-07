@@ -98,7 +98,7 @@ class Cities
         }
         foreach ($this->lines as $city) {
             $first = mb_substr($city, 0, 1, 'UTF-8');
-            $last  = mb_substr($city, -1, 1, 'UTF-8');
+            $last  = mb_strtoupper(mb_substr($city, -1, 1, 'UTF-8'));
             if (!isset($this->namedletters[$first]) || !isset($this->namedletters[$last])) {
                 throw new Exception('Invalid cities list');
             }
