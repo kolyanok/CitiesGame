@@ -37,6 +37,9 @@ class Cities
 		try 
 		{
      $this->db = new mysqli($my_host, $my_user, $my_password, $my_database) ;
+     $this->db->set_charset('utf8');
+     $this->db->query('SET NAMES utf8');
+     
 		} catch (Exception $e ) 
 		{
 				 die ("База данных недоступна");
@@ -162,7 +165,7 @@ class Cities
 		}
 		
 		if (mb_strlen($search) <= 2) {
-		    return 'Текущий город: '. mb_strtoupper($otvet, 'UTF-8'). ' Первая буква города должна быть '. $this->NUJbuk;
+		    return 'Текущий город: '. mb_strtoupper($this->otvet, 'UTF-8'). ' Первая буква города должна быть '. $this->NUJbuk;
 		    //exit;
 		}
 		
@@ -190,13 +193,13 @@ class Cities
 		                } //konec while
 		                try
 										{
-											$this->db->query("UPDATE cities SET named='".$this->db->real_escape_string(serialize($this->used))."', letters='".$this->db->real_escape_string(serialize($this->namedletters))."'");
+											$this->db->query("UPDATE cities SET named='".$this->db->real_escape_string(serialize($this->used))."', letters='".$this->db->real_escape_string(serialize($this->namedletters))."' WHERE chatid=$this->chat");
 										}
 										 catch (Exception $e ) 
 										{
 												 die ("База данных недоступна");	
 										}
-		                return 'назвал правильный город '. mb_strtoupper($fndcity, 'UTF-8'). '! Теперь нужно назвать город на букву '. mb_strtoupper($NOVbuk, 'UTF-8');
+		                return 'Назван правильный город '. mb_strtoupper($fndcity, 'UTF-8'). '! Теперь нужно назвать город на букву '. mb_strtoupper($NOVbuk, 'UTF-8');
 		                
 		            }
 		            //не в ИФ, потому что всё равно пишем кол-во, или нулевое, или нет
@@ -205,7 +208,7 @@ class Cities
 		    }
 		    // If the text was not found, show a message
 		    if (!$found)
-		        return 'Такого города нет! Текущий город: '. mb_strtoupper($this->used[$this->count1], 'UTF-8'). ' Первая буква города должна быть '. $this->NUJbuk;
+		        return 'Такого города в России нет! Текущий город: '. mb_strtoupper($this->used[$this->count1], 'UTF-8'). ' Первая буква города должна быть '. $this->NUJbuk;
 		}
 }
 //$cities = new Cities(1);
