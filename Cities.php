@@ -66,7 +66,6 @@ class Cities
 		try
 		{
 			$result = $this->db->query("SELECT * FROM cities WHERE chatid = $this->chat");
-			//die ("privet");
 			if ($result->num_rows > 0)
 			{
 				$res = $result->fetch_assoc();
