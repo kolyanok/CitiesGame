@@ -23,11 +23,11 @@ class Cities
         require_once("config.php");
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         if (!$this->chat = intval($chatid))
-            die("Не удалось получить идентификатор чата");
+            throw new Exception('Invalid chat id');
         $this->lines       = file("goroda.txt");
         $this->citiescount = count($this->lines);
         if ($this->citiescount < 1)
-            die("База городов недоступна");
+             throw new Exception('DB problems');
         for ($i = 0; $i < $this->citiescount; $i++)
             $this->lines[$i] = mb_ucfirst(trim($this->lines[$i]), 'UTF-8');
         try {
@@ -37,7 +37,7 @@ class Cities
             
         }
         catch (Exception $e) {
-            die("База данных недоступна");
+            throw new Exception('DB problems');
         }
     }
     
@@ -75,7 +75,7 @@ class Cities
             $result->close();
         }
         catch (Exception $e) {
-            die("База данных недоступна");
+            throw new Exception('DB problems');
         }
         return $game;
     }
@@ -86,7 +86,7 @@ class Cities
             $this->db->query("DELETE FROM cities WHERE chatid = $this->chat");
         }
         catch (Exception $e) {
-            die("База данных недоступна");
+            throw new Exception('DB problems');
         }
     }
     
@@ -100,7 +100,7 @@ class Cities
             $first = mb_substr($city, 0, 1, 'UTF-8');
             $last  = mb_substr($city, -1, 1, 'UTF-8');
             if (!isset($this->namedletters[$first]) || !isset($this->namedletters[$last])) {
-                //throw
+                throw new Exception('Invalid cities list');
             }
             $this->namedletters[$first]++;
         }
@@ -111,7 +111,7 @@ class Cities
             $this->db->query("INSERT INTO cities SET chatid = $this->chat, named='" . $this->db->real_escape_string(serialize($this->used)) . "', letters='" . $this->db->real_escape_string(serialize($this->namedletters)) . "'");
         }
         catch (Exception $e) {
-            die("База данных недоступна");
+            throw new Exception('DB problems');
         }
         return "Начинаю новую игру: " . mb_ucfirst($this->used[0]) . "\n Назовите город на букву " . mb_strtoupper($newletter);
     }
@@ -156,7 +156,7 @@ class Cities
                         $this->db->query("UPDATE cities SET named='" . $this->db->real_escape_string(serialize($this->used)) . "', letters='" . $this->db->real_escape_string(serialize($this->namedletters)) . "' WHERE chatid=$this->chat");
                     }
                     catch (Exception $e) {
-                        die("База данных недоступна");
+                        throw new Exception('DB problems');
                     }
                     return 'Назван правильный город ' . mb_strtoupper($fndcity, 'UTF-8') . '! Теперь нужно назвать город на букву ' . mb_strtoupper($newletter, 'UTF-8');
                     
