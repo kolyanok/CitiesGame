@@ -148,12 +148,12 @@ class Cities
 		$fo    = mb_strlen($search, 'UTF-8') - 1;
 		$found = false;
 
-		if (mb_strpos($this->current, $firstletter) !== false) //проверка совпадает ли первая буква с последней
+		if (mb_strpos($this->current, $firstletter) !== false) //check if the letter is correct
 		    {
 		    foreach ($this->lines as $line) 
 		    {
 		    	$fndcity = trim($line);
-		        if (mb_strtolower($fndcity) === mb_strtolower($search)) //если ответ совпал и это не часть слова
+		        if (mb_strtolower($fndcity) === mb_strtolower($search)) //if the city exists
 		            {
 		            $found = true;
 		            $this->count++;
